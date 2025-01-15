@@ -872,7 +872,8 @@ impl TitleBGMusic {
     pub fn new() -> Self {
         let music = unsafe {
             //let music_path = format!("{}/sounds/mus_jump_at_sun_3.mp3", crate::resource_dir());
-            let music_path = format!("{}/sounds/morrislike_6.mp3", crate::resource_dir());
+            //let music_path = format!("{}/sounds/morrislike_6.mp3", crate::resource_dir());
+            let music_path = format!("{}/sounds/morrislike_simple.mp3", crate::resource_dir());
             //let music_path = format!("{}/sounds/snd_viper_full.mp3", crate::resource_dir());
             let mut music = raylib_sys::LoadMusicStream(crate::c_str_leaky(&music_path));
             raylib_sys::SetMusicVolume(music, { g_music_volume });
