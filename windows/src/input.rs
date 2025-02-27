@@ -3,7 +3,9 @@ use crossy_multi_core::game;
 use crate::{gamepad_pressed, key_pressed};
 
 // For now this is just if we are running in steam mode.
-static mut g_steam_input: bool = crate::STEAM;
+//static mut g_steam_input: bool = crate::STEAM;
+// @HACK WHILE FIXING
+pub static mut g_steam_input: bool = false;
 
 pub fn using_steam_input() -> bool {
     unsafe { g_steam_input }
@@ -277,7 +279,34 @@ pub fn goto_next_title() -> bool {
         }
     }
 
-    // @TODO @incomplete handle non-steam input for pause.
+    for i in 0..4 {
+        let gamepad_id = i as i32;
+        if gamepad_pressed(gamepad_id, raylib_sys::GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_UP) {
+            return true;
+        }
+        if gamepad_pressed(gamepad_id, raylib_sys::GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_LEFT) {
+            return true;
+        }
+        if gamepad_pressed(gamepad_id, raylib_sys::GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_DOWN) {
+            return true;
+        }
+        if gamepad_pressed(gamepad_id, raylib_sys::GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_RIGHT) {
+            return true;
+        }
+
+        if gamepad_pressed(gamepad_id, raylib_sys::GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_LEFT) {
+            return true;
+        }
+        if gamepad_pressed(gamepad_id, raylib_sys::GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_RIGHT) {
+            return true;
+        }
+        if gamepad_pressed(gamepad_id, raylib_sys::GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_UP) {
+            return true;
+        }
+        if gamepad_pressed(gamepad_id, raylib_sys::GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_DOWN) {
+            return true;
+        }
+    }
 
     false
 }
