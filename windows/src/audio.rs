@@ -69,7 +69,7 @@ fn load_sfx(filename: &str, base_volume: f32) {
 
 pub fn update_volumes() {
     unsafe {
-        for (k, v) in SFX.assume_init_ref() {
+        for (_k, v) in SFX.assume_init_ref() {
             raylib_sys::SetSoundVolume(v.sound, v.base_volume * g_sfx_volume * 0.5);
         }
     }
