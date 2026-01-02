@@ -19,6 +19,11 @@ serde = "1.0.215"
 froggy-rand = "0.2.1"
 strum = "0.26.3"
 strum_macros = "0.26.4"
-windows-sys = { version = "0.59.0", features = ["Win32_UI", "Win32", "Win32_UI_Input", "Win32_UI_Input_XboxController"] }
 steamworks = { version = "0.11.0", features = ["raw-bindings"], optional = true }
 png = "0.17.16"
+
+[target.'cfg(target_os="windows")'.dependencies.windows]
+version = "0.61"
+features = [
+"Win32_UI", "Win32", "Win32_UI_Input", "Win32_UI_Input_XboxController"
+]

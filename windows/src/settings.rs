@@ -70,11 +70,30 @@ impl Default for GlobalSettingsState {
     }
 }
 
+fn storage_root() -> String
+{
+    #[cfg(target_os = "linux")]
+    {
+        let appdata = std::env::var("HOME").unwrap_or_default();
+        return format!("{}/.crossy", appdata);
+    };
+
+    #[cfg(target_os = "windows")]
+    {
+        let appdata = std::env::var("APPDATA").unwrap_or_default();
+        return format!("{}/crossy", appdata);
+    };
+
+    #[allow(unreachable_code)]
+    {
+        todo!("Storage for platform not supported");
+    }
+}
 
 impl GlobalSettingsState {
     fn load() -> Self {
-        let appdata = std::env::var("APPDATA").unwrap();
-        let path = format!("{}\\crossy\\save_state.json", appdata);
+        let folder = storage_root();
+        let path = format!("{}/save_state.json", folder);
 
         println!("Loading settings state from {}", path);
         if let Ok(contents) = std::fs::read_to_string(&path) {
@@ -98,12 +117,11 @@ impl GlobalSettingsState {
     }
 
     fn save(&self) -> std::io::Result<()> {
-        let appdata = std::env::var("APPDATA").unwrap();
-        let crunda_path = format!("{}\\crossy", appdata);
-        let path = format!("{}\\crossy\\save_state.json", appdata);
+        let folder = storage_root();
+        let path = format!("{}/save_state.json", folder);
         println!("Saving settings state to {}", path);
 
-        std::fs::create_dir_all(&crunda_path)?;
+        std::fs::create_dir_all(&folder)?;
         let mut file = std::fs::File::create(&path)?;
 
         let data = serde_json::to_string_pretty(self)?;

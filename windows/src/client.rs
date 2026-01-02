@@ -642,7 +642,7 @@ impl Camera {
             target: raylib_sys::Vector2 { x: self.x_mod, y: self.y_mod },
             rotation: 0.0,
             zoom: 1.0,
-            
+
         }
     }
 }
@@ -731,6 +731,7 @@ impl VisualEffects {
                 *x *= MULT;
 
                 let id = i as i32;
+                #[cfg(target_os="windows")]
                 unsafe {
                     if raylib_sys::IsGamepadAvailable(id) {
                         let value = get_vibration_speed(*x);
@@ -783,23 +784,23 @@ pub struct StateTransition {
 impl StateTransition {
     pub fn new(current: &CrossyRulesetFST, prev: &Option<CrossyRulesetFST>) -> Self {
         let mut transitions = Self::default();
-        transitions.into_lobby = 
+        transitions.into_lobby =
             matches!(current, CrossyRulesetFST::Lobby { .. })
             && !matches!(prev, Some(CrossyRulesetFST::Lobby { .. }));
-        transitions.leaving_lobby = 
+        transitions.leaving_lobby =
             !matches!(current, CrossyRulesetFST::Lobby { .. })
             && matches!(prev, Some(CrossyRulesetFST::Lobby { .. }));
 
-        transitions.into_round_warmup = 
+        transitions.into_round_warmup =
             matches!(current, CrossyRulesetFST::RoundWarmup { .. })
             && !matches!(prev, Some(CrossyRulesetFST::RoundWarmup { .. }));
-        transitions.into_round = 
+        transitions.into_round =
             matches!(current, CrossyRulesetFST::Round { .. })
             && !matches!(prev, Some(CrossyRulesetFST::Round { .. }));
-        transitions.into_round_cooldown = 
+        transitions.into_round_cooldown =
             matches!(current, CrossyRulesetFST::RoundCooldown { .. })
             && !matches!(prev, Some(CrossyRulesetFST::RoundCooldown { .. }));
-        transitions.into_winner = 
+        transitions.into_winner =
             matches!(current, CrossyRulesetFST::EndWinner { .. })
             && !matches!(prev, Some(CrossyRulesetFST::EndWinner { .. }));
 
